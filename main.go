@@ -15,10 +15,17 @@ func main() {
 		port = v
 	}
 	http.HandleFunc("/", handler)
+	http.HandleFunc("/healthcheck", healthcheck)
 
 	log.Printf("starting server on port :%s", port)
 	err := http.ListenAndServe(":"+port, nil)
 	log.Fatalf("http listen error: %v", err)
+}
+
+
+func healthcheck(w http.ResponseWriter, req *http.Request) {
+	defer req.Body.Close()
+	fmt.Fprint(w, "Gucci")
 }
 
 func handler(w http.ResponseWriter, req *http.Request) {
